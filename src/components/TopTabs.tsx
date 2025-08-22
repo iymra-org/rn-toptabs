@@ -1,6 +1,6 @@
 import { useLocalSearchParams, usePathname, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { InteractionManager, StyleSheet, View } from "react-native";
 import AnimatedButton from "./AnimatedButton";
 
 export interface TabButtonConfig {
@@ -23,7 +23,7 @@ interface TopTabsProps {
 export default function TopTabs({
   tabs,
   initialIndex = 0,
-  syncWithRouter = true,
+  syncWithRouter = false, // default: safe (no router sync)
   separate = false,
   onTabChange,
 }: TopTabsProps) {
@@ -34,32 +34,44 @@ export default function TopTabs({
   const [mounted, setMounted] = useState(false);
   const [activeIndex, setActiveIndex] = useState(initialIndex);
 
-
+  // Mark as mounted
   useEffect(() => {
     setMounted(true);
   }, []);
 
-
+  // Update index when searchParams change
   useEffect(() => {
     if (syncWithRouter && searchParams.tab) {
-      const index = tabs.findIndex((t) => t.tabKey === searchParams.tab?.toString());
-      if (index !== -1 && index !== activeIndex) setActiveIndex(index);
+      const index = tabs.findIndex(
+        (t) => t.tabKey === searchParams.tab?.toString()
+      );
+      if (index !== -1 && index !== activeIndex) {
+        setActiveIndex(index);
+      }
     }
   }, [searchParams]);
 
-
+  // Sync router safely when tab changes
   useEffect(() => {
     const activeTab = tabs[activeIndex];
+    if (!syncWithRouter || !mounted || !activeTab) return;
 
-    if (syncWithRouter && mounted && activeTab) {
-      if (activeTab.tabKey !== searchParams.tab?.toString()) {
-        router.replace({ pathname, params: { tab: activeTab.tabKey } });
-      }
+    if (activeTab.tabKey !== searchParams.tab?.toString()) {
+      InteractionManager.runAfterInteractions(() => {
+        try {
+          router.replace({ pathname, params: { tab: activeTab.tabKey } });
+        } catch (err) {
+          console.warn(
+            `[TopTabs] Failed to sync with router. 
+Make sure your project has <Slot /> in the root layout when using syncWithRouter.`,
+            err
+          );
+        }
+      });
     }
 
-
     if (activeTab && onTabChange) onTabChange(activeTab);
-  }, [activeIndex]);
+  }, [activeIndex, mounted]);
 
   const handlePress = (index: number) => {
     setActiveIndex(index);
@@ -69,7 +81,7 @@ export default function TopTabs({
 
   return (
     <View style={styles.container}>
-
+      {/* Tab bar */}
       <View style={styles.tabBar}>
         {tabs.map((tab, index) => (
           <AnimatedButton
@@ -85,19 +97,19 @@ export default function TopTabs({
         ))}
       </View>
 
-
+      {/* Separator (optional) */}
       {separate && (
         <View
           style={{
             height: 1,
             width: "100%",
-            backgroundColor: "#F3F6FF",
+            backgroundColor: "transparent",
             marginVertical: 8,
           }}
         />
       )}
 
-
+      {/* Active screen */}
       <View style={{ flex: 1, width: "100%" }}>
         {ActiveScreen && <ActiveScreen />}
       </View>

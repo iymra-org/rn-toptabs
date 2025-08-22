@@ -35,6 +35,14 @@ import React, { useState } from "react";
 import { View, Text } from "react-native";
 import TopTabs, { TabButtonConfig } from "rn-toptabs";
 
+const Chat = () => {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Chat Page</Text>
+    </View>
+  )
+}
+
 const tabs: TabButtonConfig[] = [
   {
     label: "Chat",
@@ -42,11 +50,7 @@ const tabs: TabButtonConfig[] = [
     image: require("../assets/icon/chat-default.png"),
     activeTint: "#fff",
     defaultTint: "#0B75DF",
-    component: () => (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Chat Page</Text>
-      </View>
-    ),
+    component: Chat
   },
   {
     label: "Cart",
