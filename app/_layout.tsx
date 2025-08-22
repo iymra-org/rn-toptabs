@@ -4,6 +4,13 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { TabButtonConfig, TopTabs } from "../src";
 
+const Home = () => {
+    return (
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <Text>Home Page</Text>
+        </View>
+    )
+}
 
 const tabs = [
     {
@@ -12,11 +19,7 @@ const tabs = [
         image: require("../assets/icon/chat-default.png"),
         activeTint: "#fff",
         defaultTint: "#0B75DF",
-        component: () => (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <Text>Home Page</Text>
-            </View>
-        ),
+        component: Home
     },
     {
         label: "Cart",
