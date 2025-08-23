@@ -1,7 +1,8 @@
 {
   "name": "rn-toptabs",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "src/index",
+  "type": "module",
   "scripts": {
     "start": "npx expo start ",
     "android": "npx expo start --android",
@@ -26,7 +27,7 @@
     "url": "https://github.com/iymra-org/rn-toptabs.git"
   },
   "files": [
-    "dist"
+    "src"
   ],
   "packageManager": "npm@11.5.2",
   "license": "MIT"
