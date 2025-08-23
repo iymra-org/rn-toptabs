@@ -33,7 +33,7 @@ bun add rn-toptabs
 ```tsx
 import React, { useState } from "react";
 import { View, Text } from "react-native";
-import TopTabs, { TabButtonConfig } from "rn-toptabs";
+import { TopTabs, TabButtonConfig } from "rn-toptabs";
 
 const Chat = () => {
   return (
