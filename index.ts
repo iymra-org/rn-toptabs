@@ -1,4 +1,4 @@
 export {
     default as TopTabs,
     TabButtonConfig
-} from "./components/TopTabs"
+} from "./src/components/TopTabs"

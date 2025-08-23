@@ -1,13 +1,10 @@
 {
   "name": "rn-toptabs",
   "version": "1.0.7",
-  "main": "src/index",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "npx expo start ",
-    "android": "npx expo start --android",
-    "ios": "npx expo start --ios",
-    "web": "npx expo start --web"
+    "build": "tsc"
   },
   "peerDependencies": {
     "expo": ">=49.0.0 <53.0.0",
@@ -27,7 +24,9 @@
     "url": "https://github.com/iymra-org/rn-toptabs.git"
   },
   "files": [
-    "src"
+    "src",
+    "index.ts",
+    "README.md"
   ],
   "packageManager": "npm@11.5.2",
   "license": "MIT"

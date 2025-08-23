@@ -33,15 +33,19 @@ bun add rn-toptabs
 ```tsx
 import React, { useState } from "react";
 import { View, Text } from "react-native";
-import { TopTabs, TabButtonConfig } from "rn-toptabs";
+import TopTabs, { TabButtonConfig } from "rn-toptabs";
 
-const Chat = () => {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Chat Page</Text>
-    </View>
-  )
-}
+const Chat = () => (
+  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <Text>Chat Page</Text>
+  </View>
+);
+
+const Cart = () => (
+  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <Text>Cart Page</Text>
+  </View>
+);
 
 const tabs: TabButtonConfig[] = [
   {
@@ -50,7 +54,7 @@ const tabs: TabButtonConfig[] = [
     image: require("../assets/icon/chat-default.png"),
     activeTint: "#fff",
     defaultTint: "#0B75DF",
-    component: Chat
+    component: Chat,
   },
   {
     label: "Cart",
@@ -58,23 +62,20 @@ const tabs: TabButtonConfig[] = [
     image: require("../assets/icon/cart-white.png"),
     activeTint: "#fff",
     defaultTint: "#5150C9",
-    component: () => (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Cart Page</Text>
-      </View>
-    ),
+    component: Cart,
   },
 ];
 
 export default function App() {
-  // Optional: Get reactive active tab object
   const [activeTab, setActiveTab] = useState<TabButtonConfig>(tabs[0]);
 
   return (
     <View style={{ flex: 1 }}>
       <TopTabs
         tabs={tabs}
-        syncWithRouter={true}   // Enable URL sync
+        syncWithRouter={{
+          type : "path" // or "param for param routing sync
+          }}   
         separate                // Optional separator below tab bar
         onTabChange={setActiveTab} // Reactive tab state callback
       />
@@ -88,9 +89,9 @@ export default function App() {
 This package requires the following peer dependencies in your project:
 
 ```
-expo >=49.0.0 <53.0.0
-react >=17.0.0 <19.0.0
-react-native >=0.72.0 <0.77.0
+expo >=49.0.0
+react >=17.0.0
+react-native >=0.72.0
 expo-router >=4.0.21
 react-native-reanimated >=3.16.1
 ```
@@ -130,6 +131,7 @@ If your project already uses these dependencies, you do not need to change anyth
 
 
 
+
 ## **Router Sync (`syncWithRouter`)**
 
 `TopTabs` can automatically **sync the active tab with your URL** using **`expo-router`**, enabling:
@@ -138,34 +140,70 @@ If your project already uses these dependencies, you do not need to change anyth
 * Preserving tab state across navigation
 * Bookmarkable tab URLs
 
+### **Router Sync Modes**
+
+You can choose how tab state is reflected in the URL:
+
+#### 1. Query Param Mode (default)
+
+```tsx
+<TopTabs
+  tabs={tabs}
+  syncWithRouter={true} // or syncWithRouter={{ type: "param" }}
+/>
+```
+
+- **Result:**
+  - Tab state is synced via query param: `/?tab=chat`
+  - Deep linking: `/?tab=cart` opens the "Cart" tab
+  - URL updates as tab changes: `/?tab=chat`, `/?tab=cart`, etc.
+
+#### 2. Path Segment Mode
+
+```tsx
+<TopTabs
+  tabs={tabs}
+  syncWithRouter={{ type: "path" }}
+/>
+```
+
+- **Result:**
+  - Tab state is synced via last path segment: `/app/chat`
+  - Deep linking: `/cart` opens the "Cart" tab
+  - URL updates as tab changes: `/chat`, `/cart`, etc.
+
+#### 3. No Router Sync
+
+```tsx
+<TopTabs
+  tabs={tabs}
+  syncWithRouter={false}
+/>
+```
+
+- **Result:**
+  - Tab state is local only; URL does not change.
+
 ### **How It Works**
 
 1. **Sync from URL on mount**
-   If `syncWithRouter` is enabled and the URL contains a `tab` query parameter, `TopTabs` will automatically select the corresponding tab.
-
-   ```ts
-   // Example URL: /app?tab=cart
-   // "Cart" tab will be active on load
-   ```
+   - In "param" mode, if the URL contains a `tab` query parameter, TopTabs will select the corresponding tab.
+   - In "path" mode, the last segment of the path is used to select the tab.
 
 2. **Update URL on tab change**
-   When a user selects a tab, `TopTabs` updates the URL query automatically:
-
-   ```ts
-   // Active tab: "Chat"
-   // URL updates to: /app?tab=chat
-   ```
+   - In "param" mode, the URL query param updates: `/app?tab=chat`
+   - In "path" mode, the last path segment updates: `/app/chat`
 
 3. **Works with browser history & deep links**
-   Users can share links with a specific tab selected or navigate back/forward while keeping the tab state intact.
+   - Users can share links with a specific tab selected or navigate back/forward while keeping the tab state intact.
 
 4. **Optional reactive tab state**
-   Use the `onTabChange` callback to **get the active tab object** whenever it changes:
+   - Use the `onTabChange` callback to get the active tab object whenever it changes:
 
    ```tsx
    <TopTabs
      tabs={tabs}
-     syncWithRouter
+     syncWithRouter={{ type: "path" }}
      onTabChange={(tab) => console.log("Current tab:", tab.label)}
    />
    ```
