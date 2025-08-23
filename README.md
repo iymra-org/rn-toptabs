@@ -2,6 +2,9 @@
 
 A smooth and interactive animated top tab bar inspired by Apple’s Mail app, built with **React Native**, **Reanimated**, and **Expo**. Perfect for creating engaging top-navigation experiences in your mobile apps.
 
+## Example Demo
+![Demo](https://github.com/iymra-org/rn-toptabs/raw/main/example.gif)
+
 
 ## **Features**
 
@@ -33,7 +36,7 @@ bun add rn-toptabs
 ```tsx
 import React, { useState } from "react";
 import { View, Text } from "react-native";
-import TopTabs, { TabButtonConfig } from "rn-toptabs";
+import { TopTabs, TabButtonConfig } from "rn-toptabs";
 
 const Chat = () => (
   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
