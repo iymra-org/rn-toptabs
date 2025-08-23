@@ -156,3 +156,4 @@ export default function App() {
 * Works seamlessly with `expo-router` for consistent URL-based tab state.
 * Optional separator can be enabled with the `separate` prop.
 * Supports **custom tab icons**, **tint colors**, and **dynamic components** per tab.
+
