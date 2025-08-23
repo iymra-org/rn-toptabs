@@ -28,6 +28,12 @@ export default function TopTabs({ tabs, initialIndex = 0, syncWithRouter = false
     }, []);
     // Determine router sync mode
     const routerSyncType = typeof syncWithRouter === "object" ? syncWithRouter.type : (syncWithRouter ? "param" : undefined);
+    // Warn if using experimental path sync
+    React.useEffect(() => {
+        if (routerSyncType === "path") {
+            console.warn("[TopTabs] syncWithRouter type 'path' is experimental and may not work perfectly in all routing setups. This will be improved in the next update.");
+        }
+    }, [routerSyncType]);
     // Update index when router changes
     useEffect(() => {
         if (!routerSyncType)

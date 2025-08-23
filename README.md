@@ -161,6 +161,7 @@ You can choose how tab state is reflected in the URL:
   - Deep linking: `/?tab=cart` opens the "Cart" tab
   - URL updates as tab changes: `/?tab=chat`, `/?tab=cart`, etc.
 
+
 #### 2. Path Segment Mode
 
 ```tsx
@@ -169,6 +170,8 @@ You can choose how tab state is reflected in the URL:
   syncWithRouter={{ type: "path" }}
 />
 ```
+
+> ⚠️ **Warning:** The `syncWithRouter={{ type: "path" }}` option is experimental and may not work perfectly in all routing setups. You may encounter issues with tab sync or navigation. This will be improved in the next update.
 
 - **Result:**
   - Tab state is synced via last path segment: `/app/chat`
