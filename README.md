@@ -83,6 +83,28 @@ export default function App() {
 }
 ```
 
+## **Peer Dependencies**
+
+This package requires the following peer dependencies in your project:
+
+```
+expo >=49.0.0 <53.0.0
+react >=17.0.0 <19.0.0
+react-native >=0.72.0 <0.77.0
+expo-router >=4.0.21
+react-native-reanimated >=3.16.1
+```
+
+You must install these in your app. Any compatible version above the minimum will work—no need to match the exact version.
+
+**Example:**
+
+```bash
+npm install expo-router@^4.0.21 react-native-reanimated@^3.16.1
+```
+
+If your project already uses these dependencies, you do not need to change anything.
+
 
 ## **TopTabs Props**
 
